@@ -28,6 +28,14 @@ class SearchAdapter(context: Context) : RecyclerView.Adapter<SearchAdapter.ViewH
         holder.bind(movies[position])
     }
 
+    fun setData(movies: List<MovieShort>?) {
+        this.movies.clear()
+
+        movies?.let{
+            this.movies.addAll(movies)
+        }
+    }
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val title: TextView = view.findViewById(R.id.title)

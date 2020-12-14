@@ -24,6 +24,8 @@ class SearchFragment : Fragment() {
     //les viewmodels sont gardés par le système plutot que de l'appeler a chaque fois si le viewmodel existe deja pour ce fragment.
     private val viewModel: SearchViewModel by viewModels()
 
+    private lateinit var adapter: SearchAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +42,9 @@ class SearchFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recycler_fragment_movie_search)
         editText = view.findViewById(R.id.editText_fragment_movie_search)
 
+        adapter = SearchAdapter(requireContext())
+        recyclerView.adapter = adapter
+
         button.setOnClickListener {
             viewModel.searchMovie(editText.text.toString())
         }
@@ -54,15 +59,15 @@ class SearchFragment : Fragment() {
             is SearchState.ErrorState -> {
                 progressBar.isVisible = false
                 Toast.makeText(requireContext(), "Error", Toast.LENGTH_LONG).show()
-                //TODO empty list
+                adapter.setData(null)
             }
             is SearchState.LoadingState -> {
                 progressBar.isVisible = true
+                adapter.setData(null)
             }
             is SearchState.SuccessState -> {
                 progressBar.isVisible = false
-                //TODO setdata list
-
+                adapter.setData(state.movies)
 
             }
         }

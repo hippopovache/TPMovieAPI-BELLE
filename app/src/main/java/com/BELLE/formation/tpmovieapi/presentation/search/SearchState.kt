@@ -9,7 +9,5 @@ sealed class SearchState {
     //object = classe sans paramètres (contrairement à celle au dessu)
     object ErrorState : SearchState()
 
-    object LoginState : SearchState()
-
     object LoadingState : SearchState()
 }
