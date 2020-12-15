@@ -6,26 +6,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.BELLE.formation.tpmovieapi.data.repository.OmdbRepository
 import com.BELLE.formation.tpmovieapi.domain.repository.SearchRepository
+import com.BELLE.formation.tpmovieapi.domain.repository.ShowRepository
 import kotlinx.coroutines.launch
 
-class SearchViewModel : ViewModel() {
-    private val repository: SearchRepository = OmdbRepository()
+class ShowViewModel : ViewModel() {
+    private val repository: ShowRepository = OmdbRepository()
 
     //mutable = modifiable
     private val _state = MutableLiveData<SearchState>()
 
     //celui ci ne peux pas être modifié, uniquement la lecture, en kotlin pas besoin de getteurs et setteurs, il suffit de faire comme ça (en non mutable)
-    val state: LiveData<SearchState> get() = _state
+    val state: LiveData<ShowState> get() = _state
 
-    fun searchMovie(text: String) {
-        _state.value = SearchState.LoadingState
+    fun showMovie(text: String) {
+        _state.value = ShowState.LoadingState
 
         viewModelScope.launch {
             try {
-                _state.value = SearchState.SuccessState(repository.searchMovie(text))
+                _state.value = ShowState.SuccessState(repository.getMovieDetail(text))
 
             } catch (e: Exception) {
-                _state.value = SearchState.ErrorState
+                _state.value = ShowState.ErrorState
             }
         }
     }

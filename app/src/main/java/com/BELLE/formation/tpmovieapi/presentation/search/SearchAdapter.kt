@@ -11,7 +11,13 @@ import com.BELLE.formation.tpmovieapi.R
 import com.BELLE.formation.tpmovieapi.domain.model.MovieShort
 import com.squareup.picasso.Picasso
 
-class SearchAdapter(context: Context) : RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+class SearchAdapter(
+    context: Context, val listener: OnSearchItemClickListener
+) : RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+
+    interface OnSearchItemClickListener {
+        fun onSearchItemClick(id: String)
+    }
 
     private val movies: ArrayList<MovieShort> = ArrayList()
 
@@ -31,9 +37,11 @@ class SearchAdapter(context: Context) : RecyclerView.Adapter<SearchAdapter.ViewH
     fun setData(movies: List<MovieShort>?) {
         this.movies.clear()
 
-        movies?.let{
+        movies?.let {
             this.movies.addAll(movies)
         }
+
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -43,7 +51,7 @@ class SearchAdapter(context: Context) : RecyclerView.Adapter<SearchAdapter.ViewH
 
         init {
             view.setOnClickListener {
-                //TODO
+                listener.onSearchItemClick(movies[adapterPosition].id)
             }
         }
 

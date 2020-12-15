@@ -13,8 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.BELLE.formation.tpmovieapi.R
+import com.BELLE.formation.tpmovieapi.presentation.MainActivity
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), SearchAdapter.OnSearchItemClickListener {
 
     private lateinit var button: Button
     private lateinit var editText: EditText
@@ -42,7 +43,7 @@ class SearchFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recycler_fragment_movie_search)
         editText = view.findViewById(R.id.editText_fragment_movie_search)
 
-        adapter = SearchAdapter(requireContext())
+        adapter = SearchAdapter(requireContext(), this)
         recyclerView.adapter = adapter
 
         button.setOnClickListener {
@@ -71,5 +72,12 @@ class SearchFragment : Fragment() {
 
             }
         }
+    }
+
+    override fun onSearchItemClick(id: String) {
+        val activity: MainActivity? = activity as? MainActivity
+
+        //si activity n'est pas nul alors on execute cette fonction
+        activity?.displayMovieDetail(id)
     }
 }
